@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="epicbot">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/epicbot.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../epicbot.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

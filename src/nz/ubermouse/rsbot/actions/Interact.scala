@@ -7,18 +7,25 @@ import com.epicbot.api.shared.wrappers.{ViewportEntity, Locatable}
 import nz.ubermouse.rsbot.helpers.Wait
 
 class Interact(entity: ViewportEntity, action: String) extends Action {
-  override def run: Unit = {
-    if(!Calculations.isOnScreen(entity.getCentralPoint))
-      return
+  override def run: Boolean = {
+    val centerPoint = entity.getCentralPoint
+    if(!Calculations.isOnScreen(centerPoint) && !Calculations.isOnCanvas(centerPoint.x, centerPoint.y))
+      return false
 
     val moveTo = entity.getCentralPoint
     Mouse.move(moveTo)
-    Wait.until(){Mouse.getLocation == moveTo}
+    println("Waiting for mouse to move to location: ", moveTo)
+    if(!Wait.until(1000){Mouse.getLocation == moveTo || Menu.contains(action)}) {
+      println(Mouse.getLocation == moveTo)
+      println(Menu.contains(action))
+      return false
+    }
 
-    Mouse.click(false)
-    Wait.until(750){Menu.isOpen}
+    if(!Menu.select(action)) {
+      println("Menu selection failed, aborting")
+      return false
+    }
 
-    Menu.select(action)
-    Wait.until(500){Menu.isCollapsed}
+    true
   }
 }

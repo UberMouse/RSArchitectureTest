@@ -1,9 +1,9 @@
 package nz.ubermouse.rsbot.tasks
 
-import nz.ubermouse.rsbot.actions.Action
+import nz.ubermouse.rsbot.actions.{ActionContainer, Action}
+import nz.ubermouse.rsbot._
 
-abstract class Task[S](val priority: Int) {
-  def getStateFromWorld: S
-  def shouldExecute(state: S): Boolean
-  def execute(state: S): List[Action]
+abstract class Task(val priority: Int) {
+  def shouldExecute: Boolean
+  def execute: ActionContainer
 }

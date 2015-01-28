@@ -12,7 +12,8 @@ object Wait {
       waited += SLEEP_INCREMENT
     }
 
-    waited == timeout
+    println("Waited timeout", waited, timeout)
+    waited != timeout
   }
 
 }

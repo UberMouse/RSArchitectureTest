@@ -1,10 +1,11 @@
 <component name="libraryTable">
   <library name="API">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/API.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../API.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="http://api2.epicbot.com/rs3/" />
+      <root url="http://api2.epicbot.com/shared/" />
     </JAVADOC>
     <SOURCES />
   </library>

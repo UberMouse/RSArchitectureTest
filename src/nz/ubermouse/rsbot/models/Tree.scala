@@ -1,21 +1,25 @@
 package nz.ubermouse.rsbot.models
 
-import com.epicbot.api.rs3.methods.Calculations
+import com.epicbot.api.rs3.methods.{Walking, Calculations}
+import com.epicbot.api.rs3.methods.interactive.Players
 import com.epicbot.api.rs3.wrappers.node.SceneObject
-import com.sun.javaws.exceptions.InvalidArgumentException
 import nz.ubermouse.rsbot.ids.TreeIds
-import nz.ubermouse.rsbot.actions.{RotateCamera, Interact}
+import nz.ubermouse.rsbot.actions._
 
 class Tree(obj: SceneObject) extends TreeIds {
   if(!treeIds.contains(obj.getID))
-    throw new InvalidArgumentException(Array("Passed GameObject is not a tree"))
+    throw new IllegalArgumentException("obj is not a tree")
 
-  def chop = {
-    val interact = new Interact(obj, "chop")
+  def chop: List[Action] = {
+    if(Walking.getDestination.equals(obj.getLocation))
+      return List[Action]()
+
+    val predicate = Players.getLocal.isMoving || !Players.getLocal.isIdle
+    var actions = List(new Interact(obj, "chop down"), new WaitUntil(predicate))
 
     if(!Calculations.isOnScreen(obj.getCentralPoint))
-      List(new RotateCamera(obj), interact)
-    else
-      List(interact)
+      actions = new RotateOrMoveTo(obj) :: actions
+
+    actions
   }
 }
